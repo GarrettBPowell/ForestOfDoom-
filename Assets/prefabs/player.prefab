@@ -103,12 +103,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  jumpForce: 300
+  jumpForce: 500
   isGrounded: 1
   bulletForce: 200
   spawnPoint: {fileID: 1304490468418501816}
   energyBall: {fileID: 304786830502186047, guid: 5c1917c323964c14ea820efd262e85b1, type: 3}
   fireForward: 1
+  joystick: {fileID: 0}
+  jump: {fileID: 0}
+  buttonClicked: 0
 --- !u!60 &1304490466952049951
 PolygonCollider2D:
   m_ObjectHideFlags: 0

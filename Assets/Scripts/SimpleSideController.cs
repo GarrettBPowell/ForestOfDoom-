@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class SimpleSideController : MonoBehaviour
 {
@@ -21,12 +22,23 @@ public class SimpleSideController : MonoBehaviour
     public GameObject energyBall;
     public bool fireForward = true;
 
+    public Joystick joystick;
+
+    public Button jump;
+    public bool buttonClicked;
+
     // Start is called before the first frame update
     void Start()
     {
         blahblah = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        Button btn = jump.GetComponent<Button>();
+        btn.onClick.AddListener(TaskOnClick);
+    }
+    void TaskOnClick()
+    {
+        buttonClicked = true;
     }
 
     // Update is called once per frame
@@ -34,17 +46,22 @@ public class SimpleSideController : MonoBehaviour
     {
         // What Moves Us
         float horizontalInput = Input.GetAxis("Horizontal");
+        float horizontalJoyInput = joystick.Horizontal;
         //Get the value of the Horizontal input axis.
 
-        transform.Translate(new Vector3(horizontalInput, 0, 0) * moveSpeed * Time.deltaTime);
+        if(horizontalInput != 0)
+            transform.Translate(new Vector3(horizontalInput, 0, 0) * moveSpeed * Time.deltaTime);
+        else if(horizontalJoyInput != 0)
+            transform.Translate(new Vector3(horizontalJoyInput, 0, 0) * moveSpeed * Time.deltaTime);
 
-        if (horizontalInput > 0) 
+
+        if (horizontalInput > 0 || horizontalJoyInput > 0) 
         {
             animator.SetBool("isRunning", true);
             spriteRenderer.flipX = false;
             fireForward = true;
         } 
-        else if (horizontalInput < 0) 
+        else if (horizontalInput < 0 || horizontalJoyInput < 0) 
         {
             animator.SetBool("isRunning", true);
             spriteRenderer.flipX = true;
@@ -58,10 +75,11 @@ public class SimpleSideController : MonoBehaviour
 
     void FixedUpdate() 
     {
-        if (Input.GetButton("Jump") && isGrounded) 
+        if ((Input.GetButton("Jump") || buttonClicked) && isGrounded) 
         {
             blahblah.AddForce(transform.up * jumpForce);
             animator.SetBool("isJumping", true);
+            buttonClicked = false;
         }
 
         if (Input.GetButtonDown("Fire1")) 

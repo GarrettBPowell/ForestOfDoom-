@@ -21,7 +21,7 @@ public class EpicFail : MonoBehaviour
             {
                 //load game over scene instead
                 Debug.Log("pain");
-                SceneManager.LoadScene(2);
+                SceneManager.LoadScene("Game Over");
             }
             else
             {
